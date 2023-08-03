@@ -30,7 +30,7 @@ Visualizações principais utilizando as bibliotecas plotly e plotly express.
 Mostra um gráfico de linha com a temperatura ao longo do tempo, onde o eixo x representa as datas e o eixo y 
 representa as temperaturas. Essa visualização permite observar a variação da temperatura ao longo do período analisado.
 
-#A segunda visualização 
+# A segunda visualização 
 
 Utiliza um gráfico de caixa para mostrar a distribuição da temperatura em cada mês. Cada caixa representa a 
 variação da temperatura em um mês específico, permitindo identificar padrões e tendências sazonais.
