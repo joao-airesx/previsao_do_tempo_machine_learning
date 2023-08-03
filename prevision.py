@@ -16,6 +16,27 @@ data.rename(columns={'value': 'VALOR'}, inplace=True)
 
 data['DATA'] = data['VARIAVEL'] + ' ' + data['ANO'].astype(str)
 
-data.loc[:, 'DATA'] = data['DATA'].apply(lambda x: datetime.strptime(x , '%b %Y')).dt.date
+data.loc[:, 'DATA'] = data['DATA'].apply(lambda x: datetime.strptime(x, '%b %Y')).dt.date
 
+# Temperatura ao longo do tempo
+
+data.columns = ['ANO', 'MÊS', 'TEMPERATURA', 'DATA']
+data.sort_values(by='DATA', inplace=True)  # para obter a série temporal correta
+figura = go.Figure(layout=go.Layout(yaxis=dict(range=[0, data['TEMPERATURA'].max() + 1])))
+figura.add_trace(go.Scatter(x=data['DATA'], y=data['TEMPERATURA']), )
+figura.update_layout(title='Temperatura ao Longo da Linha do Tempo',
+                     xaxis_title='Tempo', yaxis_title='Temperatura em Graus')
+figura.update_layout(xaxis=go.layout.XAxis(
+    rangeselector=dict(
+        buttons=list([dict(label='Visão Total', step='all'),
+                      dict(count=1, label='Visualização de Um Ano', step='year', stepmode='todate')
+                      ])),
+        rangeslider=dict(visible=True), type='date')
+)
+figura.show()
+
+figura = px.box(data, 'MÊS', 'TEMPERATURA')
+figura.update_layout(title='Temperatura mensal mais quente, mais fria e na média')
+
+figura.show()
 print(data.head())
