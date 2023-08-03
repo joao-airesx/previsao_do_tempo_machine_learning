@@ -1,6 +1,6 @@
 # Previsão do Tempo com Machine Learning
 
-Ete projeto tem como objetivo analisar os dados e perver o tempo com um banco de dados com histórico de temperaturas da India.
+Este projeto tem como objetivo analisar os dados e perver o tempo com um banco de dados com histórico de temperaturas da India.
 
 Bib Ultilizadas:
 
