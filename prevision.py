@@ -31,12 +31,45 @@ figura.update_layout(xaxis=go.layout.XAxis(
         buttons=list([dict(label='Visão Total', step='all'),
                       dict(count=1, label='Visualização de Um Ano', step='year', stepmode='todate')
                       ])),
-        rangeslider=dict(visible=True), type='date')
+    rangeslider=dict(visible=True), type='date')
 )
 figura.show()
 
 figura = px.box(data, 'MÊS', 'TEMPERATURA')
 figura.update_layout(title='Temperatura mensal mais quente, mais fria e na média')
+
+figura.show()
+
+from sklearn.cluster import KMeans
+
+erros = []
+alvo = data['TEMPERATURA'].to_numpy().reshape(-1, 1)
+num_clusters = list(range(1, 10))
+
+for k in num_clusters:
+    km = KMeans(n_clusters=k)
+    km.fit(alvo)
+    erros.append(km.inertia_)
+
+figura = go.Figure(data=[
+    go.Scatter(x=num_clusters, y=erros, mode='lines'),
+    go.Scatter(x=num_clusters, y=erros, mode='markers')
+])
+
+figura.update_layout(title='Avaliação do número de clusters:',
+                     xaxis_title='Número de Clusters:',
+                     yaxis_title='Soma da distância ao quadrado:',
+                     showlegend=False)
+
+figura.show()
+
+km = KMeans(3)
+km.fit(data['TEMPERATURA'].to_numpy().reshape(-1, 1))
+data.loc[:, 'Rótulos de Temperatura'] = km.labels_
+figura = px.scatter(data, 'DATA', 'TEMPERATURA', color='Rótulos de Temperatura')
+figura.update_layout(title='Temperatura Cluster',
+                     xaxis_title='Data',
+                     yaxis_title='Temperatura')
 
 figura.show()
 print(data.head())
