@@ -65,11 +65,32 @@ figura.show()
 
 km = KMeans(3)
 km.fit(data['TEMPERATURA'].to_numpy().reshape(-1, 1))
-data.loc[:, 'Rótulos de Temperatura'] = km.labels_
-figura = px.scatter(data, 'DATA', 'TEMPERATURA', color='Rótulos de Temperatura')
+data.loc[:, 'ROTULOS DE TEMPERATURA'] = km.labels_
+figura = px.scatter(data, 'DATA', 'TEMPERATURA', color='ROTULOS DE TEMPERATURA')
 figura.update_layout(title='Temperatura Cluster',
                      xaxis_title='Data',
                      yaxis_title='Temperatura')
 
 figura.show()
+
+# Cria um histograma da coluna 'TEMPERATURA' do DataFrame 'data'
+# nbins=200 define o número de intervalos (barras) no histograma
+# histnorm='density' indica que estamos plotando a densidade de probabilidade
+figura = px.histogram(x=data['TEMPERATURA'], nbins=200, histnorm='density')
+figura.update_layout(title='Gráfico de frequência das leituras de temperatura:',
+                     xaxis_title='Temperatura', yaxis_title='Contagem')
+
+figura.show()
+
+data['MEDIA ANUAL'] = data.iloc[:,1:].mean(axis=1)
+figura = go.Figure(data[
+    go.Scatter(name='Temperatura Anual', x=data['ANO'], y=data['MEDIA ANUAL'], mode='lines'),
+    go.Scatter(name='Temperatura Anual', x=data['ANO'], y=data['MEDIA ANUAL'], mode='markers')
+                 ])
+figura.update_layout(title='Temperatura Média Anual:',
+                     xaxis_title='Tempo',
+                     yaxis_title='Temperatura em Graus')
+
+figura.show()
+
 print(data.head())
